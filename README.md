@@ -2,14 +2,15 @@
 
 An unofficial, privacy-first floating usage monitor for Codex on macOS and Windows.
 
-Codex Usage Dock stays beside the active Codex window and shows the two limits people check most often:
+Codex Usage Dock sits in the bottom-right corner of the active Codex window and shows the two limits people check most often:
 
 - five-hour remaining percentage and reset countdown;
 - seven-day remaining percentage and reset countdown.
 
 It hides when you switch to another application, so it never floats over unrelated work.
+Drag the header to place it somewhere else relative to Codex, or collapse it into a small bottom-right icon and click once to restore the full panel.
 
-> 非官方 Codex 用量悬浮窗。支持 macOS 和 Windows，显示五小时与七天周期的剩余百分比；切换到其他软件后自动隐藏。
+> 非官方 Codex 用量悬浮窗。支持 macOS 和 Windows，默认放在 Codex 右下角，可拖动，也可收起为小图标；显示五小时与七天周期的剩余百分比，切换到其他软件后自动隐藏。
 
 ![Codex Usage Dock showing remaining five-hour and seven-day quota](docs/screenshot.png)
 
@@ -58,7 +59,7 @@ CODEX_USAGE_DOCK_ALWAYS_VISIBLE=1 npm run tauri dev
 
 ## Release
 
-Push a semantic version tag such as `v0.1.0`. GitHub Actions builds a universal macOS image and Windows installers, then attaches them to the release.
+Push a semantic version tag such as `v0.2.0`. GitHub Actions builds a universal macOS image and Windows installers, then attaches them to the release.
 
 Unsigned development builds may trigger macOS Gatekeeper or Windows SmartScreen. Production distribution should add Apple Developer ID and Windows code-signing secrets.
 

@@ -34,6 +34,8 @@ The companion reads quota data locally from Codex App Server. It must not reques
 ## Expected behavior
 
 - Show five-hour and seven-day remaining percentages (`100 - usedPercent`).
-- Follow the right side of the foreground Codex window.
+- Default to the bottom-right corner of the foreground Codex window.
+- Preserve a user-dragged position relative to Codex.
+- Collapse to a small bottom-right icon and expand again when clicked.
 - Hide when another application is active.
 - Start quietly at system sign-in when the user leaves autostart enabled.

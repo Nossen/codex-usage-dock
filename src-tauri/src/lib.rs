@@ -4,6 +4,7 @@ mod window_tracker;
 
 use tauri::{AppHandle, Manager, State};
 use usage::{SharedUsageState, UsageSnapshot};
+use window_tracker::SharedPanelLayout;
 
 #[tauri::command]
 async fn get_usage_snapshot(state: State<'_, SharedUsageState>) -> Result<UsageSnapshot, String> {
@@ -13,6 +14,11 @@ async fn get_usage_snapshot(state: State<'_, SharedUsageState>) -> Result<UsageS
 #[tauri::command]
 fn exit_app(app: AppHandle) {
     app.exit(0);
+}
+
+#[tauri::command]
+fn set_panel_collapsed(collapsed: bool, layout: State<'_, SharedPanelLayout>) {
+    layout.set_collapsed(collapsed);
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -29,12 +35,18 @@ pub fn run() {
         )
         .setup(|app| {
             let usage_state = SharedUsageState::default();
+            let panel_layout = SharedPanelLayout::default();
             app.manage(usage_state.clone());
+            app.manage(panel_layout.clone());
             app_server::spawn(app.handle().clone(), usage_state);
-            window_tracker::spawn(app.handle().clone());
+            window_tracker::spawn(app.handle().clone(), panel_layout);
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_usage_snapshot, exit_app])
+        .invoke_handler(tauri::generate_handler![
+            get_usage_snapshot,
+            set_panel_collapsed,
+            exit_app
+        ])
         .run(tauri::generate_context!())
         .expect("error while running Codex Usage Dock");
 }

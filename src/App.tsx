@@ -30,6 +30,8 @@ const COPY = {
     sevenDays: "7 days",
     remaining: "remaining",
     autostart: "Launch quietly at sign-in",
+    collapse: "Collapse to a small icon",
+    expand: "Show usage dock",
     quit: "Quit Codex Usage Dock",
     switchLanguage: "切换到中文",
   },
@@ -45,6 +47,8 @@ const COPY = {
     sevenDays: "7 天",
     remaining: "剩余",
     autostart: "登录系统后静默启动",
+    collapse: "收起为小图标",
+    expand: "展开用量悬浮窗",
     quit: "退出 Codex 用量悬浮窗",
     switchLanguage: "Switch to English",
   },
@@ -106,6 +110,8 @@ function App() {
   const [snapshot, setSnapshot] = useState(EMPTY_SNAPSHOT);
   const [autostart, setAutostart] = useState(false);
   const [autostartBusy, setAutostartBusy] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [collapseBusy, setCollapseBusy] = useState(false);
   const [language, setLanguage] = useState<Language>(initialLanguage);
   const copy = COPY[language];
 
@@ -170,6 +176,37 @@ function App() {
     setLanguage(next);
   }
 
+  async function toggleCollapsed() {
+    if (collapseBusy) return;
+    const next = !collapsed;
+    setCollapseBusy(true);
+    try {
+      await invoke("set_panel_collapsed", { collapsed: next });
+      setCollapsed(next);
+    } finally {
+      setCollapseBusy(false);
+    }
+  }
+
+  if (collapsed) {
+    return (
+      <button
+        className="dock-bubble"
+        type="button"
+        aria-label={copy.expand}
+        title={copy.expand}
+        disabled={collapseBusy}
+        onClick={() => void toggleCollapsed()}
+      >
+        <span className="brand-mark" aria-hidden="true">
+          <i />
+          <i />
+        </span>
+        <span className={`bubble-status ${snapshot.connection}`} />
+      </button>
+    );
+  }
+
   return (
     <main className="dock-shell">
       <header className="dock-header" data-tauri-drag-region>
@@ -193,6 +230,16 @@ function App() {
             <span className={language === "zh" ? "active" : ""}>中</span>
             <i />
             <span className={language === "en" ? "active" : ""}>EN</span>
+          </button>
+          <button
+            className="collapse-button"
+            type="button"
+            aria-label={copy.collapse}
+            title={copy.collapse}
+            disabled={collapseBusy}
+            onClick={() => void toggleCollapsed()}
+          >
+            −
           </button>
           <button
             className="quit-button"
