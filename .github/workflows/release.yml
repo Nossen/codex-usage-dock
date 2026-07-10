@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: "--target universal-apple-darwin"
+            rust_targets: "aarch64-apple-darwin,x86_64-apple-darwin"
+          - platform: windows-latest
+            args: ""
+            rust_targets: ""
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1.17.0
+        with:
+          toolchain: stable
+          target: ${{ matrix.rust_targets }}
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and publish installers
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Codex Usage Dock ${{ github.ref_name }}"
+          releaseBody: "Download the macOS or Windows installer from the assets below. This project is unofficial and is not affiliated with OpenAI."
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}

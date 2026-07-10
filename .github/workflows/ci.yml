@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1.17.0
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Test and build frontend
+        run: npm run check
+
+      - name: Check Rust formatting
+        working-directory: src-tauri
+        run: cargo fmt --all -- --check
+
+      - name: Test Rust core
+        working-directory: src-tauri
+        run: cargo test --all-targets
+
+      - name: Lint Rust core
+        working-directory: src-tauri
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Compile desktop application
+        run: npm run tauri build -- --no-bundle

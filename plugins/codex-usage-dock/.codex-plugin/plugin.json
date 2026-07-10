@@ -1,0 +1,29 @@
+{
+  "name": "codex-usage-dock",
+  "version": "0.1.0",
+  "description": "Install, launch, and troubleshoot the Codex Usage Dock companion app.",
+  "author": {
+    "name": "Nossen",
+    "url": "https://github.com/Nossen"
+  },
+  "homepage": "https://github.com/Nossen/codex-usage-dock#readme",
+  "repository": "https://github.com/Nossen/codex-usage-dock",
+  "license": "MIT",
+  "keywords": ["codex", "usage", "quota", "productivity"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Usage Dock",
+    "shortDescription": "Keep five-hour and weekly Codex usage visible.",
+    "longDescription": "Launch and troubleshoot the cross-platform Codex Usage Dock companion, a private local panel that follows the Codex window and shows five-hour and seven-day usage.",
+    "developerName": "Nossen",
+    "category": "Productivity",
+    "capabilities": [],
+    "brandColor": "#6C5CFF",
+    "websiteURL": "https://github.com/Nossen/codex-usage-dock",
+    "defaultPrompt": [
+      "Open Codex Usage Dock.",
+      "Help me install Codex Usage Dock.",
+      "Diagnose why my usage dock is not visible."
+    ]
+  }
+}
