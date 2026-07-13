@@ -2,18 +2,13 @@ mod app_server;
 mod usage;
 mod window_tracker;
 
-use tauri::{AppHandle, Manager, State};
+use tauri::{Manager, State};
 use usage::{SharedUsageState, UsageSnapshot};
 use window_tracker::SharedPanelLayout;
 
 #[tauri::command]
 async fn get_usage_snapshot(state: State<'_, SharedUsageState>) -> Result<UsageSnapshot, String> {
     Ok(state.0.read().await.clone())
-}
-
-#[tauri::command]
-fn exit_app(app: AppHandle) {
-    app.exit(0);
 }
 
 #[tauri::command]
@@ -44,8 +39,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             get_usage_snapshot,
-            set_panel_collapsed,
-            exit_app
+            set_panel_collapsed
         ])
         .run(tauri::generate_context!())
         .expect("error while running Codex Usage Dock");

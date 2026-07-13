@@ -32,7 +32,6 @@ const COPY = {
     autostart: "Launch quietly at sign-in",
     collapse: "Collapse to a small icon",
     expand: "Show usage dock",
-    quit: "Quit Codex Usage Dock",
     switchLanguage: "切换到中文",
   },
   zh: {
@@ -49,7 +48,6 @@ const COPY = {
     autostart: "登录系统后静默启动",
     collapse: "收起为小图标",
     expand: "展开用量悬浮窗",
-    quit: "退出 Codex 用量悬浮窗",
     switchLanguage: "Switch to English",
   },
 } as const;
@@ -240,14 +238,6 @@ function App() {
             onClick={() => void toggleCollapsed()}
           >
             −
-          </button>
-          <button
-            className="quit-button"
-            type="button"
-            aria-label={copy.quit}
-            onClick={() => void invoke("exit_app")}
-          >
-            ×
           </button>
         </div>
       </header>

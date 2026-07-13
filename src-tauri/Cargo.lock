@@ -571,7 +571,7 @@ dependencies = [
 
 [[package]]
 name = "codex-usage-dock"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "active-win-pos-rs",
  "serde",
