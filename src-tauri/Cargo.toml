@@ -1,6 +1,6 @@
 [package]
 name = "codex-usage-dock"
-version = "0.2.1"
+version = "0.2.2"
 description = "A floating Codex usage monitor for macOS and Windows"
 authors = ["Nossen"]
 edition = "2024"
